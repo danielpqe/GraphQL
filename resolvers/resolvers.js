@@ -1,33 +1,27 @@
 'use strict'
 
-const courses = [
-    {
-    _id: 'ID',
-    title: 'Titulo',
-    teacher: 'Teacher',
-    description: 'Description',
-    topic: 'Programacion'
-    },
-    {
-    _id: 'ID',
-    title: 'Titulo2',
-    teacher: 'Teacher',
-    description: 'Description',
-    topic: 'Programacion'
-    },
-    {
-    _id: 'ID',
-    title: 'Titulo3',
-    teacher: 'Teacher',
-    description: 'Description',
-    topic: 'Programacion'
-    },
-]
+const connectDB = require('../lib/db')
 
-module.exports = 
+module.exports =
 {
-    getCourses: () => {
+  Query: {
+    getCourses: async () => {
+      let db
+      let courses = []
+      try {
+        db = await connectDB()
+        courses = await db.collection('courses').find().toArray()
+        console.log('Courses', courses)
+      } catch (error) {
+        console.log(error)
+      }
+
       return courses
+    },
+    getCourse: (root, args) => {
+      const course = Courses.filter(course => course._id === args.id)
+      return course.pop()
     }
   }
+}
 
